@@ -7,8 +7,8 @@ Project ini dibuat untuk memenuhi tugas mata kuliah Struktur Data. Dengan tema A
 ## Cara Penggunaan
 
 1. Clone repository ini
-2. Install Tabulate dengan perintah `pip install tabulate`
-3. Buka terminal dan masuk ke direktori repository ini
+2. Buka terminal dan masuk ke direktori repository ini
+3. Install Tabulate dengan perintah `pip install tabulate`
 4. Jalankan perintah `py main.py`
 5. Masukkan ekspresi infix. Contoh: `(A+(B*C))`
 6. Dan sudah di konversi menjadi postfix dan prefix ditambah ada step by stepnya
