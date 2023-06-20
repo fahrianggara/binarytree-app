@@ -46,7 +46,7 @@ class Converter:
         self.stack = Stack()
         self.precedence = {'+':2, '-':2, '*':3, '/':3, '%':3, '^':4}
 
-    def precedence_level(self, char):
+    def priority_level(self, char):
         """ Mengembalikan nilai prioritas dari operator 
 
             Parameters:
@@ -218,13 +218,13 @@ class Converter:
                     self_stack.push(char) # <-- Tambahkan operator ke stack pada posisi paling atas / akhir
 
                 else: # <-- Jika stack tidak kosong
-                    if self.precedence_level(char) > self.precedence_level(self_stack.peek()):
+                    if self.priority_level(char) > self.priority_level(self_stack.peek()):
                         """ Jika operator char memiliki nilai prioritas yang lebih besar dari 
                         operator pada posisi paling atas / akhir"""
                     
                         self_stack.push(char) # <-- Tambahkan operator ke stack pada posisi paling atas / akhir
 
-                    elif self.precedence_level(char) <= self.precedence_level(self_stack.peek()):
+                    elif self.priority_level(char) <= self.priority_level(self_stack.peek()):
                         """ Jika operator char memiliki nilai prioritas yang lebih kecil atau sama dengan dari
                         operator pada posisi paling atas / akhir"""
                     
