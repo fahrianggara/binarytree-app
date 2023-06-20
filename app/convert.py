@@ -306,8 +306,8 @@ class Converter:
             )
         )
  
-        print(f"\nStep by step Infix => Postfix:")
-        print( # <-- Menampilkan hasil konversi dari Infix ke Postfix secara step by step
+        print(f"\nStep by Step Infix => Postfix:")
+        print( # <-- Menampilkan hasil konversi dari Infix ke Postfix secara step by Step
             tabulate(
                 self.step_by_step_postfix(expr), # <-- Memanggil method step_by_step_postfix (Data table)
                 headers=['#', 'Input', 'Symbol', 'Output', 'Stack'],
@@ -315,8 +315,8 @@ class Converter:
             )
         )
 
-        print(f"\nStep by step Infix => Prefix:")
-        print( # <-- Menampilkan hasil konversi dari Infix ke Prefix secara step by step
+        print(f"\nStep by Step Infix => Prefix:")
+        print( # <-- Menampilkan hasil konversi dari Infix ke Prefix secara step by Step
             tabulate(
                 self.step_by_step_prefix(expr),
                 headers=['Input', 'Symbol', 'Output', 'Stack'],

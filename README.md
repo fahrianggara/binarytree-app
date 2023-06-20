@@ -23,7 +23,7 @@ Hasil Konversi Infix => Postfix & Prefix:
 | (A+(B*C)) | ABC*+   | +A*BC  |
 +-----------+---------+--------+
 
-Step by step Infix => Postfix:
+Step by Step Infix => Postfix:
 +-----+-----------+----------+----------+---------+
 |   # | Input     | Symbol   | Output   | Stack   |
 +=====+===========+==========+==========+=========+
@@ -46,7 +46,7 @@ Step by step Infix => Postfix:
 |   9 | (A+(B*C)) | )        | ABC*+    |         |
 +-----+-----------+----------+----------+---------+
 
-Step by step Infix => Prefix:
+Step by Step Infix => Prefix:
 +----+-----------+----------+----------+---------+
 |    | Input     | Symbol   | Output   | Stack   |
 +====+===========+==========+==========+=========+
