@@ -49,7 +49,7 @@ Step by Step Infix => Postfix:
 
 Step by Step Infix => Prefix:
 +----+-----------+----------+----------+---------+
-|    | Input     | Symbol   | Output   | Stack   |
+|  # | Input     | Symbol   | Output   | Stack   |
 +====+===========+==========+==========+=========+
 |  1 | ((C*B)+A) | (        |          | (       |
 +----+-----------+----------+----------+---------+
