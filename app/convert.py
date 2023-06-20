@@ -319,7 +319,7 @@ class Converter:
         print( # <-- Menampilkan hasil konversi dari Infix ke Prefix secara step by Step
             tabulate(
                 self.step_by_step_prefix(expr),
-                headers=['Input', 'Symbol', 'Output', 'Stack'],
+                headers=['#', 'Input', 'Symbol', 'Output', 'Stack'],
                 tablefmt='grid', 
             )
         )
