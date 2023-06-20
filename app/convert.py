@@ -66,7 +66,7 @@ class Converter:
             return 2
         elif char == ")": # Jika tutup kurung maka nilai prioritasnya 1
             return 1
-        else:
+        else: # Jika bukan operator maka nilai prioritasnya 0
             return 0
     
     def less_or_equal_priority(self, char, peek):
