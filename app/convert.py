@@ -1,5 +1,5 @@
-from tabulate import tabulate # <-- Library untuk membuat tabel
-from app import * # <-- Import semua yang ada di folder app
+from tabulate import tabulate 
+from app import * 
 
 # ========================================================================================================
 # Section Stack: Membuat Operasi Stack. LIFO (Last In First Out) 
@@ -7,22 +7,22 @@ from app import * # <-- Import semua yang ada di folder app
 
 class Stack:
 
-    def __init__(self): # <-- Inisialisasi properties dari class Stack
+    def __init__(self): 
         self.items = []
 
-    def is_empty(self): # <-- Mengecek apakah list kosong
+    def is_empty(self): 
         return self.items == []
     
-    def push(self, item): # <-- Menambahkan item pada posisi paling atas / akhir
+    def push(self, item): 
         self.items.append(item)
 
-    def pop(self): # <-- Menghapus item pada posisi paling atas / akhir
+    def pop(self): 
         return self.items.pop()
     
-    def peek(self): # <-- Mendapatkan item pada posisi paling atas / akhir
+    def peek(self): 
         return self.items[self.noel() - 1]
     
-    def noel(self): # <-- Menghitung jumlah item pada list
+    def noel(self): 
         return len(self.items)
     
 # ========================================================================================================
@@ -36,290 +36,142 @@ class Converter:
     # ========================================================================================================
 
     def __init__(self):
-        """ Inisialisasi properties dari class Converter
-        
-            Var:
-                stack (Stack): Stack yang digunakan untuk menyimpan operator, diambil dari class Stack
-                precedence (dict): Dictionary yang berisi operator dan nilai prioritasnya
-        """
-
         self.stack = Stack()
-        self.precedence = {'+':2, '-':2, '*':3, '/':3, '%':3, '^':4}
 
     def priority_level(self, char):
-        """ Mengembalikan nilai prioritas dari operator 
-
-            Parameters:
-                char (str): Menyimpan operator dari infix
-
-            Returns:
-                int: Nilai prioritas dari operator
-        """
-
-        if char == "(": # Jika buka kurung maka nilai prioritasnya 5
+        if char == "(":
             return 5
-        elif char == "^": # Jika pangkat maka nilai prioritasnya 4
+        elif char == "^":
             return 4
-        elif char in ["*", "/", "%"]: # Jika perkalian, pembagian, atau modulus maka nilai prioritasnya 3
+        elif char in ["/", "*", "%"]:
             return 3
-        elif char in ["+", "-", "–"]: # Jika penjumlahan atau pengurangan maka nilai prioritasnya 2
+        elif char in ["+", "-", "–"]:
             return 2
-        elif char == ")": # Jika tutup kurung maka nilai prioritasnya 1
+        elif char == ")":
             return 1
-        else: # Jika bukan operator maka nilai prioritasnya 0
+        else:
             return 0
+        
+    def greater_than_priority(self, char, peek):
+        return self.priority_level(char) > self.priority_level(peek)
+    
+    def less_than_priority(self, char, peek):
+        return self.priority_level(char) < self.priority_level(peek)
     
     def less_or_equal_priority(self, char, peek):
-        """ Mengecek apakah operator char memiliki nilai prioritas yang lebih kecil atau sama dengan operator peek
-
-            Parameters:
-                char (str): Menyimpan operator dari infix
-                peek (str): menyimpan operator dari stack
-
-            Returns:
-                bool: True jika char memiliki nilai prioritas yang lebih kecil atau sama dengan peek
-        """
-
-        if char not in self.precedence:
-            return False
+        return self.priority_level(char) <= self.priority_level(peek)
         
-        if peek not in self.precedence:
-            return False
-        
-        return self.precedence[char] <= self.precedence[peek]
-    
-    def is_operand(self, char): 
-        """ Mengecek apakah karakter merupakan operand (angka atau huruf)
-
-            Parameters:
-                char (str): Operator yang akan dicek apakah merupakan operand
-
-            Returns:
-                bool: True jika karakter merupakan operand
-        """
-
+    def is_operand(self, char):
         return char.isalpha() or char.isdigit()
     
     # ========================================================================================================
     # Converter Infix to Postfix & Prefix
     # ========================================================================================================
 
-    def to_postfix(self, expr):
-        """ Mengubah Infix menjadi Postfix
-
-            Parameters:
-                expr[expression] (str): Infix yang akan diubah menjadi Postfix
-
-            Vars:
-                self_stack (Stack): Stack yang digunakan untuk menyimpan operator, diambil dari class Stack
-                result_output (str): Menyimpan hasil konversi dari Infix ke Postfix
-
-            Returns:
-                str: Hasil konversi dari Infix ke Postfix
-        """
-
-        self_stack = self.stack
-        result_output = ''
-
-        for char in expr: # <-- Looping setiap karakter pada expr
-
-            if self.is_operand(char): # <-- Jika karakter merupakan operand (angka atau huruf)
-                result_output += char # <-- Tambahkan karakter ke result_output
-
-            else: # <-- Jika karakter merupakan operator
-                if char == '(': # <-- Jika karakter adalah '(' buka kurung
-                    self_stack.push(char) # <-- Tambahkan operator ke stack pada posisi paling atas / akhir
-
-                elif char == ')': # <-- Jika karakter adalah ')' tutup kurung
-                    operator = self_stack.pop() # <-- Ambil operator pada posisi paling atas / akhir
-
-                    while operator != '(': # <-- Looping selama operator bukan '(' buka kurung
-                        result_output += operator # <-- Tambahkan operator ke result_output
-                        operator = self_stack.pop() # <-- Ambil operator pada posisi paling atas / akhir
-
-                else: # <-- Jika karakter adalah operator selain '(' buka kurung dan ')' tutup kurung
-
-                    while not self_stack.is_empty() \
-                        and self.less_or_equal_priority(char, self_stack.peek()):
-                        """ Looping selama stack tidak kosong dan operator pada posisi paling atas / akhir 
-                            yang memiliki nilai prioritas yang lebih besar dari operator char 
-                        """
-
-                        result_output += self_stack.pop() # <-- Tambahkan operator ke result_output
-
-                    self_stack.push(char) # <-- Tambahkan operator ke stack pada posisi paling atas / akhir
-
-        while not self_stack.is_empty(): # <-- Looping selama stack tidak kosong
-            result_output += self_stack.pop() # <-- Tambahkan operator ke result_output
-
-        return result_output # <-- Kembalikan hasil konversi dari Infix ke Postfix
-
-    def to_prefix(self, expr):
-        """ Mengubah Infix menjadi Prefix
-
-            Paramaters:
-                expr (str): Karakter infix yang akan diubah menjadi prefix
-
-            Vars:
-                rvs_expr (str): Menyimpan hasil reverse (dibalik) dari expr
-
-            Returns:
-                str: Hasil konversi dari Infix ke Prefix
-        """
-
-        rvs_expr = ""
-
-        for char in reversed(expr): # <-- Looping setiap karakter pada expr secara terbalik
-            if char == '(':
-                rvs_expr += ')'
-            elif char == ')':
-                rvs_expr += '('
-            else: # <-- Jika karakter adalah operator selain '(' buka kurung dan ')' tutup kurung
-                rvs_expr += char
-
-        prefix = self.to_postfix(rvs_expr) # <-- Mengubah rvs_expr menjadi postfix
-        return prefix[::-1] # <-- Mengembalikan hasil reverse dari prefix
-    
-    # ========================================================================================================
-    # Step by Step Converter Infix to Postfix & Prefix
-    # ========================================================================================================
-
-    def step_by_step_postfix(self, expr):
-        """ Mengubah Infix menjadi Postfix secara step by step
-
-            Parameters:
-                expr (str): Karakter infix yang akan diubah menjadi postfix
-
-            Vars:
-                self_stack (Stack): Stack yang digunakan untuk menyimpan operator, diambil dari class Stack
-                result_output (str): Menyimpan hasil konversi dari Infix ke Postfix
-                result_stack (str): Menyimpan operator yang ada pada stack
-                output (list): Menyimpan hasil konversi dari Infix ke Postfix secara step by step
-                table (list): Menyimpan hasil konversi dari Infix ke Postfix secara step by step
-
-            Returns:
-                list: Hasil konversi dari Infix ke Postfix secara step by step
-        """
-
-        self_stack = self.stack
-        result_output = ''
-        result_stack = ''
-        number = 0
-        table = []
+    def to_postfix(self, expr, step_by_step = False, prefix_mode = False):
+        stack = self.stack
         output = []
+        data_table = []
+        number_table = 0
+        result_stack = ""
+        result_output = ""
 
-        for char in expr: # <-- Looping setiap karakter pada expr
-            number += 1 # <-- Menambahkan nilai number dengan 1 untuk urutan step
+        for char in expr: 
+            number_table += 1 
 
-            if self.is_operand(char): # <-- Jika karakter merupakan operand (angka atau huruf)
-                output.append(char) # <-- Tambahkan karakter ke output
-            else:
-                if self_stack.noel() == 0: # <-- Jika stack kosong
-                    self_stack.push(char) # <-- Tambahkan operator ke stack pada posisi paling atas / akhir
+            if self.is_operand(char): 
+                output.append(char) 
 
-                else: # <-- Jika stack tidak kosong
-                    if self.priority_level(char) > self.priority_level(self_stack.peek()):
-                        """ Jika operator char memiliki nilai prioritas yang lebih besar dari 
-                        operator pada posisi paling atas / akhir"""
-                    
-                        self_stack.push(char) # <-- Tambahkan operator ke stack pada posisi paling atas / akhir
+            else: 
+                if stack.is_empty(): 
+                    stack.push(char) 
 
-                    elif self.priority_level(char) <= self.priority_level(self_stack.peek()):
-                        """ Jika operator char memiliki nilai prioritas yang lebih kecil atau sama dengan dari
-                        operator pada posisi paling atas / akhir"""
-                    
-                        if char == ")": # <-- Jika karakter adalah ')' tutup kurung
+                else: 
+                    if self.greater_than_priority(char, stack.peek()):
+                        stack.push(char) 
 
-                            while self_stack.peek() != "(" and self_stack.noel() > 0:
-                                """ Looping selama operator pada posisi paling atas / akhir bukan '(' buka kurung 
-                                    dan stack tidak kosong"""
+                    else: 
+                        if char == '(': 
+                            stack.push(char) 
+
+                        elif char == ')': 
+
+                            while stack.peek() != '(' and stack.noel() > 0:
+                                output.append(stack.pop()) 
                                 
-                                output.append(self_stack.pop()) # <-- Tambahkan operator ke output
+                            stack.pop() 
 
-                            self_stack.pop() # <-- Hapus operator pada posisi paling atas / akhir
+                        else: 
 
-                        else: # <-- Jika karakter adalah operator selain ')' tutup kurung
+                            while stack.noel() > 0 and stack.peek() != '(' and \
+                                (
+                                    self.less_than_priority(char, stack.peek()) 
+                                    if prefix_mode 
+                                    else self.less_or_equal_priority(char, stack.peek())
+                                ):
+                                output.append(stack.pop()) 
 
-                            while self_stack.noel() > 0 and self_stack.peek() != "(":
-                                """ Looping selama operator pada posisi paling atas / akhir bukan '(' buka kurung 
-                                    dan stack tidak kosong"""
-                                
-                                output.append(self_stack.pop()) # <-- Tambahkan operator ke output
+                            stack.push(char) 
 
-                            self_stack.push(char) # <-- Tambahkan operator ke stack pada posisi paling atas / akhir
+            result_output = " ".join(output) 
+            result_stack = " ".join(stack.items) 
+            data_table.append([number_table, expr, char, result_output, result_stack]) 
 
+        while not stack.is_empty(): 
+            output.append(stack.pop()) 
 
-            result_output = ''.join(output) # <-- Mengubah list output menjadi string
-            result_stack = ''.join(self_stack.items) # <-- Mengubah list items pada stack menjadi string
-            table.append([number, expr, char, result_output, result_stack]) # <-- Tambahkan data ke table
+        result_output = " ".join(output) 
+        result_stack = " ".join(stack.items)
+        data_table.append([number_table + 1, expr, '', result_output, result_stack])
 
-        while not self_stack.is_empty() : # <-- Looping selama stack tidak kosong
-            output.append(self_stack.pop()) # <-- Tambahkan operator ke output
+        return data_table if step_by_step else result_output
 
-        return table # <-- Kembalikan hasil konversi dari Infix ke Postfix secara step by step
+    def to_prefix(self, expr, step_by_step = False, reverse = False):
+        reverse_expr = ""
+
+        for char in reversed(expr): 
+
+            if char == "(": 
+                reverse_expr += ")" 
+            elif char == ")": 
+                reverse_expr += "(" 
+            else: 
+                reverse_expr += char 
+
     
-    def step_by_step_prefix(self, expr):
-        """ Mengubah Infix menjadi Prefix secara step by step
-
-            Parameters:
-                expr (str): Karakter infix yang akan diubah menjadi prefix
-
-            Vars:
-                rvs_expr (str): Menyimpan hasil reverse (dibalik) dari expr
-
-            Returns:
-                list: Hasil konversi dari Infix ke Prefix secara step by step
-        """
-
-        rvs_expr = ""
-
-        for char in reversed(expr): # <-- Looping setiap karakter pada expr secara terbalik
-            if char == '(':
-                rvs_expr += ')'
-            elif char == ')':
-                rvs_expr += '('
-            else: # <-- Jika karakter adalah operator selain '(' buka kurung dan ')' tutup kurung
-                rvs_expr += char
-
-        prefix = self.step_by_step_postfix(rvs_expr) # <-- Mengubah rvs_expr menjadi postfix
-        return prefix # <-- Mengembalikan hasil reverse dari prefix
+        prefix = self.to_postfix(reverse_expr, step_by_step, True) 
+        return prefix if step_by_step else prefix[::-1]
     
     # ========================================================================================================
     # Converter Result
     # ========================================================================================================
 
     def convert(self, expr):
-        """ Menampilkan hasil konversi dari Infix ke Postfix & Prefix
-        
-            Parameters:
-                expr (str): Karakter infix yang akan diubah menjadi postfix & prefix
-        """
-
         print(f"\nHasil Konversi Infix => Postfix & Prefix:")
-        print( # <-- Menampilkan hasil konversi dari Infix ke Postfix & Prefix
+        print( 
             tabulate(
                 [
-                    ["Infix", "Postfix", "Prefix"], # <-- Header table
-                    [expr, self.to_postfix(expr), self.to_prefix(expr)] # <-- Data table
+                    ["Infix", "Postfix", "Prefix"], 
+                    [expr, self.to_postfix(expr), self.to_prefix(expr, False, True)] 
                 ],
-                tablefmt='grid' # <-- Style table
+                tablefmt='grid' 
             )
         )
- 
+
         print(f"\nStep by Step Infix => Postfix:")
-        print( # <-- Menampilkan hasil konversi dari Infix ke Postfix secara step by Step
+        print( 
             tabulate(
-                self.step_by_step_postfix(expr), # <-- Memanggil method step_by_step_postfix (Data table)
-                headers=['#', 'Input', 'Symbol', 'Output', 'Stack'],
+                self.to_postfix(expr, True), 
+                headers=['Step', 'Input', 'Char', 'Output', 'Stack'],
                 tablefmt='grid',
             )
         )
 
         print(f"\nStep by Step Infix => Prefix:")
-        print( # <-- Menampilkan hasil konversi dari Infix ke Prefix secara step by Step
+        print( 
             tabulate(
-                self.step_by_step_prefix(expr),
-                headers=['#', 'Input', 'Symbol', 'Output', 'Stack'],
+                self.to_prefix(expr, True),
+                headers=['Step', 'Input', 'Char', 'Output', 'Stack'],
                 tablefmt='grid', 
             )
         )
