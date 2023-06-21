@@ -77,7 +77,7 @@ class Converter:
         result_output = ""
 
         for char in expr: 
-            number_table += 1 
+            number_table += 1
 
             if self.is_operand(char): 
                 output.append(char) 
@@ -113,7 +113,7 @@ class Converter:
 
             result_output = " ".join(output) 
             result_stack = " ".join(stack.items) 
-            data_table.append([number_table, expr, char, result_output, result_stack]) 
+            data_table.append([number_table, expr, char, result_output, result_stack])
 
         while not stack.is_empty(): 
             output.append(stack.pop()) 
@@ -121,6 +121,9 @@ class Converter:
         result_output = " ".join(output) 
         result_stack = " ".join(stack.items)
         data_table.append([number_table + 1, expr, '', result_output, result_stack])
+
+        if prefix_mode:
+            data_table.append([number_table + 2, expr, '', result_output[::-1], result_stack])
 
         return data_table if step_by_step else result_output
 

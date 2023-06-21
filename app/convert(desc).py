@@ -208,6 +208,11 @@ class Converter:
         result_stack = " ".join(stack.items)
         data_table.append([number_table + 1, expr, '', result_output, result_stack])
 
+        if prefix_mode: # <-- Jika prefix_mode = True
+            
+            # Menambahkan data lagi ke dalam list data_table untuk menampilkan prefix dibalik
+            data_table.append([number_table + 2, expr, '', result_output[::-1], result_stack]) 
+
         # Jika step_by_step = True, maka return data_table, jika tidak maka return result_output
         return data_table if step_by_step else result_output
 
