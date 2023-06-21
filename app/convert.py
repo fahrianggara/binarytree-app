@@ -95,14 +95,12 @@ class Converter:
                             stack.push(char) 
 
                         elif char == ')': 
-
                             while stack.peek() != '(' and stack.noel() > 0:
                                 output.append(stack.pop()) 
                                 
                             stack.pop() 
 
                         else: 
-
                             while stack.noel() > 0 and stack.peek() != '(' and \
                                 (
                                     self.less_than_priority(char, stack.peek()) 
