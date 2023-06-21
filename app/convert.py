@@ -103,8 +103,7 @@ class Converter:
                         else: 
                             while stack.noel() > 0 and stack.peek() != '(' and \
                                 (
-                                    self.less_than_priority(char, stack.peek()) 
-                                    if prefix_mode 
+                                    self.less_than_priority(char, stack.peek()) if prefix_mode 
                                     else self.less_or_equal_priority(char, stack.peek())
                                 ):
                                 output.append(stack.pop()) 
