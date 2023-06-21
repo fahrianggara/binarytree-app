@@ -136,7 +136,6 @@ class Converter:
             else: 
                 reverse_expr += char 
 
-    
         prefix = self.to_postfix(reverse_expr, step_by_step, True) 
         return prefix if step_by_step else prefix[::-1]
     
