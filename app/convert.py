@@ -39,15 +39,13 @@ class Converter:
         self.stack = Stack()
 
     def priority_level(self, char):
-        if char == "(":
-            return 5
-        elif char == "^":
+        if char == "^":
             return 4
         elif char in ["/", "*", "%"]:
             return 3
         elif char in ["+", "-", "–"]:
             return 2
-        elif char == ")":
+        elif char in ["(", ")"]:
             return 1
         else:
             return 0
@@ -55,10 +53,10 @@ class Converter:
     def greater_than_priority(self, char, peek):
         return self.priority_level(char) > self.priority_level(peek)
     
-    def less_than_priority(self, char, peek):
+    def less_than_priority(self, char, peek): # for prefix
         return self.priority_level(char) < self.priority_level(peek)
     
-    def less_or_equal_priority(self, char, peek):
+    def less_or_equal_priority(self, char, peek): # for postfix
         return self.priority_level(char) <= self.priority_level(peek)
         
     def is_operand(self, char):

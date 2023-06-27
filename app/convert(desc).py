@@ -55,15 +55,13 @@ class Converter:
                 int: Nilai prioritas dari operator
         """
 
-        if char == "(": # <- Jika buka kurung maka nilai prioritasnya 5
-            return 5
-        elif char == "^": # <- Jika pangkat maka nilai prioritasnya 4
+        if char == "^": # <- Jika pangkat maka nilai prioritasnya 4
             return 4
         elif char in ["/", "*", "%"]: # <- Jika perkalian, pembagian, atau modulus maka nilai prioritasnya 3
             return 3
         elif char in ["+", "-", "–"]: # <- Jika penjumlahan atau pengurangan maka nilai prioritasnya 2
             return 2
-        elif char == ")": # <- Jika tutup kurung maka nilai prioritasnya 1
+        elif char in ["(", ")"]: # <- Jika tutup kurung maka nilai prioritasnya 1
             return 1
         else: # <- Jika bukan operator maka nilai prioritasnya 0
             return 0
@@ -84,6 +82,7 @@ class Converter:
     
     def less_than_priority(self, char, peek):
         """ Mengecek apakah char memiliki nilai prioritas yang LEBIH KECIL dari peek
+            Digunakan untuk prefix.
 
             Params:
                 self (Converter): Class Converter
@@ -98,6 +97,7 @@ class Converter:
     
     def less_or_equal_priority(self, char, peek):
         """ Mengecek apakah char memiliki nilai prioritas yang LEBIH KECIL ATAU SAMA DENGAN dari peek
+            Digunakan untuk postfix.
 
             Params:
                 self (Converter): Class Converter
